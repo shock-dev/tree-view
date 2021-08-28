@@ -1,0 +1,30 @@
+.wrapper {
+  margin: 20px 0 6px;
+  padding-right: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.wrapper:hover .arrows:not(.rotated) {
+  fill: #4c6281;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.arrows {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  fill: #879ab7;
+  transition: transform .2s, fill .2s;
+
+  &.rotated {
+    fill: #4c6281;
+    transform: rotate(90deg);
+  }
+}
