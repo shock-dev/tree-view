@@ -1,5 +1,5 @@
 export interface IBranch {
-  _id: number
+  _id: string
   title: string
   main: boolean
 }

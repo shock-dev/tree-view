@@ -14,10 +14,7 @@ const fillTree = (list: IBranch[]): ITree | undefined => {
     const el = list[0];
 
     return {
-      [el.title.charAt(0).toLowerCase()]: {
-        open: false,
-        items: [el]
-      }
+      [el.title.charAt(0).toLowerCase()]: [el]
     };
   }
 
@@ -32,8 +29,8 @@ const fillTree = (list: IBranch[]): ITree | undefined => {
      * Иначе добавляем элемент в массив
      */
     firstLetter in tree ?
-      tree[firstLetter].items.push(el) :
-      tree[firstLetter] = { open: false, items: [el] };
+      tree[firstLetter].push(el) :
+      tree[firstLetter] = [el];
   }
 
   return tree;

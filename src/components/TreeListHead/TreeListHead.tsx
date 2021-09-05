@@ -6,8 +6,8 @@ import sprite from '../../assets/img/[icons].svg';
 interface TreeListHeadProps {
   symbol: string
   count: number
-  isOpen: boolean
-  toggle: () => void
+  isOpen?: boolean
+  toggle?: () => void
 }
 
 const TreeListHead = ({
