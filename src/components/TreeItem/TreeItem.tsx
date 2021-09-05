@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TreeListHead from '../TreeListHead/TreeListHead';
 import TreeList from '../TreeList/TreeList';
 import { IBranch } from '../../types/branch';
@@ -7,18 +7,29 @@ import filter from '../../utils/filter';
 interface TreeItemProps {
   letter: string
   list: IBranch[]
+  forceOpen: boolean
 }
 
 const TreeItem = ({
   letter,
-  list
+  list,
+  forceOpen
 }: TreeItemProps) => {
   const [open, setOpen] = useState(false);
+  // console.log(forceOpen);
+  //
+  // if (forceOpen) {
+  //   setOpen(true);
+  // }
+
+  useEffect(() => {
+    setOpen(forceOpen);
+  }, [forceOpen]);
 
   const prepareList = (items: IBranch[]): IBranch[] => {
     let list: typeof items;
 
-    if (!open) {
+    if (!open || !forceOpen) {
       const isPresentMain = items.some((el) => el.main);
       const limit = 5;
 
