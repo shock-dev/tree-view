@@ -1,0 +1,29 @@
+import { IBranch } from '../types/branch';
+
+export enum Status {
+  NEVER = 'NEVER',
+  DONE = 'DONE',
+  GETTING = 'GETTING',
+  CREATING = 'CREATING',
+  UPDATING = 'UPDATING',
+  DELETING = 'DELETING'
+}
+
+export interface RootState {
+  items: IBranch[]
+  status: Status
+  error?: string
+}
+
+export enum RootActionTypes {
+  FETCH_BRANCHES_REQUEST = 'FETCH_ITEMS_REQUEST',
+  FETCH_BRANCHES_SUCCESS = 'FETCH_BRANCHES_SUCCESS',
+
+  UPDATE_BRANCH_REQUEST = 'UPDATE_BRANCH_REQUEST',
+  UPDATE_BRANCH_SUCCESS = 'UPDATE_BRANCH_SUCCESS',
+
+  DELETE_BRANCH_REQUEST = 'DELETE_BRANCH_REQUEST',
+  DELETE_BRANCH_SUCCESS = 'DELETE_BRANCH_SUCCESS',
+
+  SET_ERROR = 'SET_ERROR'
+}
