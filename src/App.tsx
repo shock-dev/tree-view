@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBranchesRequest } from './store/actions';
 import { selectBranches, selectError, selectStatus } from './store/selectors';
-import Tree from './components/Tree/Tree';
 import Loader from './components/Loader/Loader';
 import { Status } from './store/types';
 import RegisterCheckbox from './components/RegisterCheckbox/RegisterCheckbox';
@@ -11,22 +10,34 @@ import CreatingForm from './components/CreatingForm/CreatingForm';
 import { SortBy } from './types/sort';
 import radios from './resources/sort';
 import TextInput from './components/TextInput/TextInput';
+import sort from './utils/sort';
+import TreeItem from './components/TreeItem/TreeItem';
+import fillTree from './utils/fillTree';
 
 const App = () => {
   const dispatch = useDispatch();
+  const branches = useSelector(selectBranches);
   const loading = useSelector(selectStatus) !== Status.DONE;
+  const status = useSelector(selectStatus);
   const error = useSelector(selectError);
   const [search, setSearch] = useState('');
   const [searchRegister, setSearchRegister] = useState(false);
   const [sortBy, setSortBy] = useState<SortBy>('ASC');
-  let branches = useSelector(selectBranches);
 
   useEffect(() => {
     dispatch(fetchBranchesRequest());
   }, []);
 
+  if (!branches.length && status === Status.DONE) {
+    return <div>Нет элементов</div>;
+  }
+
+  if (!branches.length) return null;
+
+  let sortedBranches = sort(branches, sortBy);
+
   if (search !== '') {
-    branches = branches.filter((b) => {
+    sortedBranches = sortedBranches.filter((b) => {
       if (searchRegister) {
         return b.title.indexOf(search) !== -1;
       }
@@ -34,6 +45,8 @@ const App = () => {
       return b.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
     });
   }
+
+  const tree = fillTree(sortedBranches);
 
   return (
     <div className="container">
@@ -67,11 +80,16 @@ const App = () => {
           <CreatingForm />
         </div>
       </div>
-      <Tree
-        items={branches}
-        sortBy={sortBy}
-        forceOpen={!!search.length}
-      />
+      <div>
+        {Object.keys(tree).map((key, index) =>
+          <TreeItem
+            key={`${key}-${index}`}
+            letter={key.charAt(0).toUpperCase()}
+            forceOpen={!!search.length}
+            list={tree[key]}
+          />
+        )}
+      </div>
     </div>
   );
 };

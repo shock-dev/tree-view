@@ -1,28 +1,14 @@
 import { IBranch } from '../types/branch';
 import { ITree } from '../types/tree';
-import { SortBy } from '../types/sort';
-import sortTree from './SortTree';
 
 /*
  * Функция для преобразования массива веток
  * в дерево вида { A: [el, el..] }
  */
-const fillTree = (list: IBranch[], sortBy: SortBy): ITree | undefined => {
-  const { length } = list;
-
-  if (length < 1) return;
-
-  if (length < 2) {
-    const el = list[0];
-
-    return {
-      [el.title.charAt(0).toLowerCase()]: [el]
-    };
-  }
-
+const fillTree = (list: IBranch[]): ITree => {
   const tree: ITree = {};
 
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < list.length; i++) {
     const el = list[i];
     const firstLetter = el.title.charAt(0).toLowerCase();
 
@@ -35,8 +21,7 @@ const fillTree = (list: IBranch[], sortBy: SortBy): ITree | undefined => {
       tree[firstLetter] = [el];
   }
 
-  // Возвращаем в отсортированном виде
-  return sortTree(tree, sortBy);
+  return tree;
 };
 
 export default fillTree;

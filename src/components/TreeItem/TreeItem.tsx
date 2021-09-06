@@ -21,30 +21,22 @@ const TreeItem = ({
   }, [forceOpen]);
 
   const prepareList = (items: IBranch[]): IBranch[] => {
-    let list: typeof items;
-
     if (open || forceOpen) {
-      list = items;
-    } else {
-      const isPresentMain = items.some((el) => el.main);
-      const limit = 5;
-
-      if (isPresentMain) {
-        list = Array.from(filter(items, (i: IBranch) => i.main, limit));
-      } else {
-        list = items.slice(0, limit - 1);
-      }
+      return items;
     }
 
-    return list.sort((a, b) => {
-      if (a.title.toLowerCase() < b.title.toLowerCase()) {
-        return -1;
-      }
-      if (a.title.toLowerCase() > b.title.toLowerCase()) {
-        return 1;
-      }
-      return 0;
-    });
+    let compressedList;
+
+    const isPresentMain = items.some((el) => el.main);
+    const limit = 5;
+
+    if (isPresentMain) {
+      compressedList = Array.from(filter(items, (i: IBranch) => i.main, limit));
+    } else {
+      compressedList = items.slice(0, limit - 1);
+    }
+
+    return compressedList;
   };
 
   return (
