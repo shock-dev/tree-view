@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef, useState } from 'react';
+import React, { FormEvent, MutableRefObject, useRef, useState } from 'react';
 import s from './CreatingForm.module.scss';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import { useDispatch } from 'react-redux';
@@ -9,8 +9,8 @@ const CreatingForm = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const [main, setMain] = useState(false);
   const ref = useRef() as MutableRefObject<HTMLInputElement>;
+  const conditionTitle = title.trim() !== '';
 
   useOutsideClick(ref, () => {
     if (isOpen) {
@@ -20,7 +20,6 @@ const CreatingForm = () => {
 
   const reset = () => {
     setTitle('');
-    setMain(false);
     setIsOpen(false);
   };
 
@@ -28,9 +27,12 @@ const CreatingForm = () => {
     setIsOpen(!isOpen);
   };
 
-  const createHandler = () => {
-    dispatch(createBranchRequest({ title, main }));
-    reset();
+  const createHandler = (e: FormEvent) => {
+    if (conditionTitle) {
+      dispatch(createBranchRequest({ title, main: true }));
+      reset();
+    }
+    e.preventDefault();
   };
 
   return (
@@ -46,25 +48,20 @@ const CreatingForm = () => {
           className={s.popup}
           ref={ref}
         >
-          <TextInput
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            full
-          />
-          <label className={s.label}>
-            <input
-              type="checkbox"
-              checked={main}
-              onChange={(e) => setMain(e.target.checked)}
+          <form onSubmit={createHandler}>
+            <TextInput
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              full
             />
-            <span>Main</span>
-          </label>
-          <button
-            className={s.btn}
-            onClick={createHandler}
-          >
-            Добавить
-          </button>
+            <button
+              type="submit"
+              className={s.btn}
+              disabled={!conditionTitle}
+            >
+              Добавить
+            </button>
+          </form>
         </div>
       )}
     </div>

@@ -36,9 +36,14 @@
 }
 
 .btn {
+  margin-top: 5px;
   background-color: green;
   color: #fff;
   border-radius: 4px;
   padding: 6px 10px;
   font-size: 14px;
+
+  &:disabled {
+    opacity: .5;
+  }
 }

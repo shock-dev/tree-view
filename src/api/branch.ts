@@ -1,5 +1,5 @@
 import axios from '../core/axios';
-import { IBranch } from '../types/branch';
+import { CreateIBranch, IBranch } from '../types/branch';
 
 class BranchApi {
   all = async () => {
@@ -7,7 +7,7 @@ class BranchApi {
     return data;
   }
 
-  create = async (formData: IBranch) => {
+  create = async (formData: CreateIBranch) => {
     const { data } = await axios.post('/brands', formData);
     return data;
   }
