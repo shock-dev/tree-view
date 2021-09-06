@@ -1,6 +1,7 @@
 import { IBranch } from '../types/branch';
 import { ITree } from '../types/tree';
 import { SortBy } from '../types/sort';
+import sortTree from './SortTree';
 
 /*
  * Функция для преобразования массива веток
@@ -34,30 +35,8 @@ const fillTree = (list: IBranch[], sortBy: SortBy): ITree | undefined => {
       tree[firstLetter] = [el];
   }
 
-  const treeKeys = Object.keys(tree);
-
-  if (sortBy === 'ASC') {
-    treeKeys.sort();
-  } else {
-    treeKeys.sort((a, b) => {
-      if (a > b) {
-        return -1;
-      }
-      if (a < b) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
-  const sortedTree: ITree = {};
-
-  for (let i = 0; i < treeKeys.length; i++) {
-    const key = treeKeys[i];
-    sortedTree[key] = tree[key];
-  }
-
-  return sortedTree;
+  // Возвращаем в отсортированном виде
+  return sortTree(tree, sortBy);
 };
 
 export default fillTree;
