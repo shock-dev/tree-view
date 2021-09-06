@@ -2,10 +2,10 @@ import React from 'react';
 import { IBranch } from '../../types/branch';
 import fillTree from '../../utils/fillTree';
 import TreeItem from '../TreeItem/TreeItem';
-import { SortBy } from '../../App';
 import { useSelector } from 'react-redux';
 import { selectStatus } from '../../store/selectors';
 import { Status } from '../../store/types';
+import { SortBy } from '../../types/sort';
 
 interface TreeListProps {
   items: IBranch[]

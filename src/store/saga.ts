@@ -2,14 +2,30 @@ import { SagaIterator } from 'redux-saga';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { RootActionTypes } from './types';
 import BranchApi from '../api/branch';
-import { deleteBranchSuccess, fetchBranchesSuccess, updateBranchSuccess } from './actions';
+import { Errors } from '../types/errors';
+import {
+  createBranchSuccess,
+  deleteBranchSuccess,
+  fetchBranchesSuccess,
+  setError,
+  updateBranchSuccess
+} from './actions';
 
 function* fetchBranches(): SagaIterator {
   try {
     const items = yield call(BranchApi.all);
     yield put(fetchBranchesSuccess(items));
   } catch (e) {
-    console.log(e);
+    yield put(setError(Errors.Default));
+  }
+}
+
+function* createBranch(action: any): SagaIterator {
+  try {
+    const created = yield call(BranchApi.create, action.payload);
+    yield put(createBranchSuccess(created));
+  } catch (e) {
+    yield put(setError(Errors.Default));
   }
 }
 
@@ -20,7 +36,7 @@ function* updateBranch(action: any): SagaIterator {
     const updated = yield call(BranchApi.update, old._id, prepareItem);
     yield put(updateBranchSuccess(updated._id, value));
   } catch (e) {
-    console.log(e);
+    yield put(setError(Errors.Default));
   }
 }
 
@@ -30,12 +46,13 @@ function* deleteBranch(action: any): SagaIterator {
     yield call(BranchApi.delete, id);
     yield put(deleteBranchSuccess(id));
   } catch (e) {
-    console.log(e);
+    yield put(setError(Errors.Default));
   }
 }
 
 function* saga() {
   yield takeLatest(RootActionTypes.FETCH_BRANCHES_REQUEST, fetchBranches);
+  yield takeLatest(RootActionTypes.CREATE_BRANCH_REQUEST, createBranch);
   yield takeLatest(RootActionTypes.UPDATE_BRANCH_REQUEST, updateBranch);
   yield takeLatest(RootActionTypes.DELETE_BRANCH_REQUEST, deleteBranch);
 }

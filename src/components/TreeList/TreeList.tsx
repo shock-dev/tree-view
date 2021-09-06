@@ -25,7 +25,7 @@ const TreeList = ({
     <ul>
       {list.map((item, index) =>
         <TreeListElement
-          key={index}
+          key={`${item.title} ${index}`}
           title={item.title}
           onUpdate={(value) => updateBranch(item, value)}
           onDelete={() => deleteBranch(item._id)}

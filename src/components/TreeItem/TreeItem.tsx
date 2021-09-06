@@ -16,12 +16,6 @@ const TreeItem = ({
   forceOpen
 }: TreeItemProps) => {
   const [open, setOpen] = useState(false);
-  // console.log(forceOpen);
-  //
-  // if (forceOpen) {
-  //   setOpen(true);
-  // }
-
   useEffect(() => {
     setOpen(forceOpen);
   }, [forceOpen]);
@@ -29,7 +23,7 @@ const TreeItem = ({
   const prepareList = (items: IBranch[]): IBranch[] => {
     let list: typeof items;
 
-    if (!open || !forceOpen) {
+    if (!open || forceOpen) {
       const isPresentMain = items.some((el) => el.main);
       const limit = 5;
 

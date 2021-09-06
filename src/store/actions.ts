@@ -1,10 +1,14 @@
 import { action } from 'typesafe-actions';
 import { RootActionTypes } from './types';
-import { IBranch } from '../types/branch';
+import { CreateIBranch, IBranch } from '../types/branch';
 
 export const fetchBranchesRequest = () => action(RootActionTypes.FETCH_BRANCHES_REQUEST);
 
 export const fetchBranchesSuccess = (items: IBranch[]) => action(RootActionTypes.FETCH_BRANCHES_SUCCESS, items);
+
+export const createBranchRequest = (item: CreateIBranch) => action(RootActionTypes.CREATE_BRANCH_REQUEST, item);
+
+export const createBranchSuccess = (item: CreateIBranch) => action(RootActionTypes.CREATE_BRANCH_SUCCESS, item);
 
 export const updateBranchRequest = (old: IBranch, value: string) => action(RootActionTypes.UPDATE_BRANCH_REQUEST, { old, value });
 

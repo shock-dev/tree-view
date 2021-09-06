@@ -17,6 +17,7 @@ body {
   font-size: 16px;
   line-height: 21px;
   color: #343434;
+  padding-bottom: 20px;
 }
 
 h1,
@@ -59,6 +60,18 @@ button {
   margin: 0 auto;
 }
 
+.flex {
+  display: flex;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.align {
+  align-items: center;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -69,9 +82,4 @@ button {
 .title {
   font-size: 24px;
   line-height: 28px;
-}
-
-.panel {
-  display: flex;
-  justify-content: space-between;
 }

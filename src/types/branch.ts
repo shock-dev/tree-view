@@ -4,3 +4,7 @@ export interface IBranch {
   main: boolean
 }
 
+export interface CreateIBranch {
+  title: string
+  main: boolean
+}

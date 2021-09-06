@@ -1,10 +1,10 @@
 import { IBranch } from '../types/branch';
 import { ITree } from '../types/tree';
-import { SortBy } from '../App';
+import { SortBy } from '../types/sort';
 
 /*
  * Функция для преобразования массива веток
- * в объект для шаблона
+ * в дерево вида { A: [el, el..] }
  */
 const fillTree = (list: IBranch[], sortBy: SortBy): ITree | undefined => {
   const { length } = list;

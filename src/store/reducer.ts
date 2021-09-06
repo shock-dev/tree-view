@@ -18,7 +18,19 @@ const reducer = produce((draft, action) => {
       draft.status = Status.DONE;
       break;
 
+    case RootActionTypes.CREATE_BRANCH_REQUEST:
+      draft.error = undefined;
+      draft.status = Status.CREATING;
+      break;
+
+    case RootActionTypes.CREATE_BRANCH_SUCCESS: {
+      draft.items.push(action.payload);
+      draft.status = Status.DONE;
+      break;
+    }
+
     case RootActionTypes.UPDATE_BRANCH_REQUEST:
+      draft.error = undefined;
       draft.status = Status.UPDATING;
       break;
 
@@ -31,6 +43,7 @@ const reducer = produce((draft, action) => {
     }
 
     case RootActionTypes.DELETE_BRANCH_REQUEST:
+      draft.error = undefined;
       draft.status = Status.DELETING;
       break;
 
@@ -41,6 +54,11 @@ const reducer = produce((draft, action) => {
       draft.status = Status.DONE;
       break;
     }
+
+    case RootActionTypes.SET_ERROR:
+      draft.error = action.payload;
+      draft.status = Status.DONE;
+      break;
 
     default:
       break;

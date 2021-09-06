@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './SortRadio.module.scss';
-import { SortBy } from '../../App';
+import { SortBy } from '../../types/sort';
 
 interface SortRadioProps {
   title: string

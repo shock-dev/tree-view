@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBranchesRequest } from './store/actions';
-import { selectBranches, selectStatus } from './store/selectors';
+import { selectBranches, selectError, selectStatus } from './store/selectors';
 import Tree from './components/Tree/Tree';
 import Loader from './components/Loader/Loader';
 import { Status } from './store/types';
-import Search from './components/Search/Search';
 import RegisterCheckbox from './components/RegisterCheckbox/RegisterCheckbox';
 import SortRadio from './components/SortRadio/SortRadio';
-
-export type SortBy = 'ASC' | 'DESC'
-
-interface IRadio {
-  title: 'A-Z' | 'Z-A'
-  value: SortBy
-}
-
-const radios: IRadio[] = [
-  { title: 'A-Z', value: 'ASC' },
-  { title: 'Z-A', value: 'DESC' }
-];
+import CreatingForm from './components/CreatingForm/CreatingForm';
+import { SortBy } from './types/sort';
+import radios from './resources/sort';
+import TextInput from './components/TextInput/TextInput';
 
 const App = () => {
   const dispatch = useDispatch();
-  const loading = useSelector(selectStatus) !== (Status.DONE || Status.CREATING);
+  const loading = useSelector(selectStatus) !== Status.DONE;
+  const error = useSelector(selectError);
   const [search, setSearch] = useState('');
   const [searchRegister, setSearchRegister] = useState(false);
   const [sortBy, setSortBy] = useState<SortBy>('ASC');
@@ -46,12 +38,13 @@ const App = () => {
   return (
     <div className="container">
       <div className="header">
-        <h1 className="title">Иерархического дерево</h1>
+        <h1 className="title">Иерархическое дерево</h1>
+        {error && <p>{error}</p>}
         {loading && <Loader />}
       </div>
-      <div className="panel">
+      <div className="flex between align">
         <div>
-          <Search
+          <TextInput
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -60,7 +53,7 @@ const App = () => {
             onChange={(e) => setSearchRegister(e.target.checked)}
           />
         </div>
-        <div>
+        <div className="flex align">
           {radios.map((r, index) =>
             <SortRadio
               key={index}
@@ -71,10 +64,10 @@ const App = () => {
               onChange={(value) => setSortBy(value)}
             />
           )}
+          <CreatingForm />
         </div>
       </div>
       <Tree
-        key={search}
         items={branches}
         sortBy={sortBy}
         forceOpen={!!search.length}

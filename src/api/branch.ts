@@ -7,6 +7,11 @@ class BranchApi {
     return data;
   }
 
+  create = async (formData: IBranch) => {
+    const { data } = await axios.post('/brands', formData);
+    return data;
+  }
+
   update = async (id: string, formData: IBranch) => {
     const { data } = await axios.put(`/brand/${id}`, formData);
     return data;
