@@ -23,7 +23,9 @@ const TreeItem = ({
   const prepareList = (items: IBranch[]): IBranch[] => {
     let list: typeof items;
 
-    if (!open || forceOpen) {
+    if (open || forceOpen) {
+      list = items;
+    } else {
       const isPresentMain = items.some((el) => el.main);
       const limit = 5;
 
@@ -32,8 +34,6 @@ const TreeItem = ({
       } else {
         list = items.slice(0, limit - 1);
       }
-    } else {
-      list = items;
     }
 
     return list.sort((a, b) => {
