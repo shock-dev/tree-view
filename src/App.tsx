@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBranchesRequest } from './store/actions';
 import { selectBranches, selectError, selectStatus } from './store/selectors';
-import Loader from './components/Loader/Loader';
 import { Status } from './store/types';
-import RegisterCheckbox from './components/RegisterCheckbox/RegisterCheckbox';
-import SortRadio from './components/SortRadio/SortRadio';
-import CreatingForm from './components/CreatingForm/CreatingForm';
+
+import Loader from './components/Loader';
+import RegisterCheckbox from './components/RegisterCheckbox';
+import SortRadio from './components/SortRadio';
+import CreatingForm from './components/CreatingForm';
+import TextInput from './components/TextInput';
+import Tree from './components/Tree';
+
 import { SortBy } from './types/sort';
 import radios from './resources/sort';
-import TextInput from './components/TextInput/TextInput';
 import sort from './utils/sort';
-import TreeItem from './components/TreeItem/TreeItem';
-import fillTree from './utils/fillTree';
 
 const App = () => {
   const dispatch = useDispatch();
   const branches = useSelector(selectBranches);
   const loading = useSelector(selectStatus) !== Status.DONE;
-  const status = useSelector(selectStatus);
   const error = useSelector(selectError);
   const [search, setSearch] = useState('');
   const [searchRegister, setSearchRegister] = useState(false);
@@ -27,12 +27,6 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchBranchesRequest());
   }, []);
-
-  if (!branches.length && status === Status.DONE) {
-    return <div>Нет элементов</div>;
-  }
-
-  if (!branches.length) return null;
 
   let sortedBranches = sort(branches, sortBy);
 
@@ -45,8 +39,6 @@ const App = () => {
       return b.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
     });
   }
-
-  const tree = fillTree(sortedBranches);
 
   return (
     <div className="container">
@@ -80,16 +72,10 @@ const App = () => {
           <CreatingForm />
         </div>
       </div>
-      <div>
-        {Object.keys(tree).map((key, index) =>
-          <TreeItem
-            key={`${key}-${index}`}
-            letter={key.charAt(0).toUpperCase()}
-            forceOpen={!!search.length}
-            list={tree[key]}
-          />
-        )}
-      </div>
+      <Tree
+        items={sortedBranches}
+        forceOpen={!!search.length}
+      />
     </div>
   );
 };

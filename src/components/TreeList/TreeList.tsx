@@ -1,5 +1,5 @@
 import React from 'react';
-import TreeListElement from '../TreeListElement/TreeListElement';
+import TreeListElement from '../TreeListElement';
 import { IBranch } from '../../types/branch';
 import { useDispatch } from 'react-redux';
 import { deleteBranchRequest, updateBranchRequest } from '../../store/actions';
